@@ -1,0 +1,8 @@
+#!/bin/bash
+# Sets environment variables for this project
+
+export POLLIFY_MYSQL_USER='pollify_dev'
+export POLLIFY_MYSQL_PWD='pollify_dev_pwd'
+export POLLIFY_MYSQL_HOST='localhost'
+export POLLIFY_MYSQL_DB='pollify_dev_db'
+export POLLIFY_ENV='dev'

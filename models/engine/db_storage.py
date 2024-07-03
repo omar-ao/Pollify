@@ -15,6 +15,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 
+classes = {"Poll": Poll, "Option": Option, "Vote": Vote, "User": User}
+
+
 class DBStorage:
     """interaacts with the MySQL database"""
     __engine = None
@@ -69,6 +72,10 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
+
+    def get_session(self):
+        """Gets a session"""
+        return self.__session
 
     def get(self, cls, id):
         """

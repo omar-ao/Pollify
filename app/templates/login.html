@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title%} Login {% endblock %}
+{% block main %}
+<div class="container">
+	{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			{% for category, message in messages %}
+				<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+					{{ message.strip("[]").strip("\'").strip("\"") }}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				  </div>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="card shadow-lg my-5">
+                <div class="card-body">
+                    <h2 class="card-title text-center">Login</h2>
+                    <form method="POST" action="{{ url_for('auth.login') }}">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control form-control-user") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.password.label(class="form-label") }}
+                            {{ form.password(class="form-control form-control-user") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.remember(class="form-check-input") }}
+                            {{ form.remember.label(class="form-check-label") }}
+                        </div>
+                        {{ form.submit(class="btn btn-primary btn-user btn-block") }}
+                    </form>
+                    <hr>
+                    <div class="text-center">
+                        <a class="small" href="{{ url_for('auth.signup') }}">Create an Account!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
