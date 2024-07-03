@@ -6,16 +6,17 @@ Poll model
 
 import models
 from models.base_model import BaseModel, Base
+from models.option import Option
 import sqlalchemy
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 
 class Poll(BaseModel, Base):
     """Represents a poll"""
-    __tablename = 'polls'
-    title = Column(db.String(200), nullable=False)
-    user_id = Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    __tablename__ = 'polls'
+    title = Column(String(200), nullable=False)
+    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     options = relationship('Option', backref='poll')
 
 
