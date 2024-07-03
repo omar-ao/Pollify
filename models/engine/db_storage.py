@@ -5,6 +5,10 @@ Contains the class DBStorage
 
 import models
 from models.base_model import BaseModel, Base
+from models.option import Option
+from models.poll import Poll
+from models.user import User
+from models.vote import Vote
 from os import getenv
 import sqlalchemy
 from sqlalchemy import create_engine
