@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %} Poppy {% endblock %}
+{% block main %}
+
+<div id="category" class="carousel slide">
+  <div class="carousel-indicators">
+    {% for key, value in categories.items() %}
+    <button type="button" data-bs-target="#category" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}" aria-label="Slide {{ loop.index }}"></button>
+    {% endfor %}
+  </div>
+  <div class="carousel-inner">
+    {% for key, value in categories.items() %}
+    <div class="carousel-item {% if loop.first %}active{% endif %}">
+      <svg class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: {{ key }}" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <title>{{ key }}</title>
+        <rect width="100%" height="100%" fill="{{ colors[loop.index0 % colors|length] }}"></rect>
+      </svg>
+      <div class="carousel-caption d-none d-md-block">
+        <h2>{{ key }}</h2>
+        <p>Quiz yourself and friends about {{ key }}.</p>
+        <br>
+        
+          <form id="quizForm" class="vstack gap-3 col-md-8 mx-auto" method="POST" action="/generate_quiz">
+            <input hidden="true" name="category" value="{{ key }}">
+            <select class="form-select" name="difficulty" aria-label="Select Difficulty">
+              <option selected value="Any">Any Difficulty</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+            <select class="form-select" name="quiz_type" aria-label="Select Type">
+              <option selected value="Any">Any Type</option>
+              <option value="boolean">True / False</option>
+              <option value="multiple">Multiple Choice</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Generate Quiz</button>
+          </form>
+        
+        <br>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#category" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#category" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+{% endblock %}
