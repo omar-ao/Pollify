@@ -57,28 +57,15 @@ def generate_quiz():
     difficulty = request.form.get('difficulty')
     quiz_type = request.form.get('quiz_type')
 
-    if difficulty == "Any" and quiz_type == "Any":
-        url = "https://opentdb.com/api.php?amount=10&category={}".format(
-        categories.get(category))
+    params = ""
+    if difficulty != "Any":
+        params = "&difficulty={}".format(difficulty.lower())
 
-    elif difficulty == "Any":
-        url = "https://opentdb.com/api.php?amount=10&category={}&type={}".format(
-        categories.get(category),
-        quiz_type
-        )
-        
-    elif quiz_type == "Any":
-        url = "https://opentdb.com/api.php?amount=10&category={}&difficulty={}".format(
-            categories.get(category),
-            difficulty
-            )
-        
-    else:
-        url = "https://opentdb.com/api.php?amount=10&category={}&difficulty={}&type={}".format(
-            categories.get(category),
-            difficulty,
-            quiz_type
-            )
+    if quiz_type != "Any":
+        params = params + "&type={}".format(quiz_type)
+
+    url = "https://opentdb.com/api.php?amount=10&category={}{}".format(
+            categories.get(category), params)
 
     response = requests.get(url=url)
     

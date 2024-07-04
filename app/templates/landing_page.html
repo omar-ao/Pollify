@@ -11,7 +11,8 @@
   <div class="carousel-inner">
     {% for key, value in categories.items() %}
     <div class="carousel-item {% if loop.first %}active{% endif %}">
-      <svg class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: {{ key }}" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <svg class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="400" xmlns="http://www.w3.org/2000/svg"
+	      role="img" aria-label="Placeholder: {{ key }}" preserveAspectRatio="xMidYMid slice" focusable="false">
         <title>{{ key }}</title>
         <rect width="100%" height="100%" fill="{{ colors[loop.index0 % colors|length] }}"></rect>
       </svg>
@@ -39,6 +40,7 @@
         <br>
       </div>
     </div>
+    
     {% endfor %}
 
   </div>
