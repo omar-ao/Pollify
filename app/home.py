@@ -3,7 +3,7 @@
 Renders home page
 """
 
-from flask import Blueprint, jsonify, redirect, render_template, request, url_for
+from flask import Blueprint, flash, jsonify, redirect, render_template, request, session, url_for
 import requests
 from flask_login import current_user, login_required
 
@@ -77,6 +77,23 @@ def generate_quiz():
     
     if response.status_code == 200:
         questions = response.json()['results']
+        session['questions'] = questions
         return render_template('quiz.html', questions=questions)
     else:
         return jsonify({'error': 'Failed to fetch questions'}), 500
+    
+@home.route('/submit_quiz', methods=['POST'])
+@login_required
+def submit_quiz():
+    """Handles quiz submission and calculates score"""
+    questions = session['questions']
+    score = 0
+    for i, question in enumerate(questions):
+        selected_answer = request.form.get(f'question{i+1}')
+        correct_answer = question['correct_answer']
+        if selected_answer == correct_answer:
+            score += 1
+    percentage = (score / 10) * 100
+
+    flash(f"You have scored: {percentage}%", "success")
+    return redirect(url_for('home.index'))
