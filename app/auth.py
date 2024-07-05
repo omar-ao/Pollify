@@ -20,7 +20,7 @@ def login():
                 email=form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember.data)
-            return redirect(url_for('poll.create_poll'))
+            return redirect(url_for('home.index'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('/login.html', form=form)

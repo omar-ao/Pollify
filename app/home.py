@@ -5,6 +5,7 @@ Renders home page
 
 from flask import Blueprint, jsonify, render_template, request
 import requests
+from flask_login import current_user, login_required
 
 home = Blueprint('home', __name__)
 
@@ -45,9 +46,10 @@ colors = [
 
 
 @home.route('/', methods=['GET'])
+@login_required
 def index():
     """Renders index page"""
-    return render_template('/landing_page.html', categories=categories,
+    return render_template('/home_page.html', categories=categories,
                            colors=colors)
 
 @home.route('/generate_quiz', methods=['POST'])
