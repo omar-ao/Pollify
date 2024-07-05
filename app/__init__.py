@@ -21,9 +21,6 @@ def create_app():
     from app.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
-    from app.poll import poll as poll_blueprint
-    app.register_blueprint(poll_blueprint)
-
     from app.home import home as home_blueprint
     app.register_blueprint(home_blueprint)
 

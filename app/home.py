@@ -3,7 +3,7 @@
 Renders home page
 """
 
-from flask import Blueprint, jsonify, render_template, request
+from flask import Blueprint, jsonify, redirect, render_template, request, url_for
 import requests
 from flask_login import current_user, login_required
 
@@ -46,15 +46,19 @@ colors = [
 
 
 @home.route('/', methods=['GET'])
-@login_required
 def index():
     """Renders index page"""
     return render_template('/home_page.html', categories=categories,
                            colors=colors)
 
 @home.route('/generate_quiz', methods=['POST'])
+@login_required
 def generate_quiz():
     """Generates quiz based on the category selected"""
+
+    if not current_user.is_authenticated:
+        return redirect(url_for('auth.login'))
+        
     category = request.form.get('category')
     difficulty = request.form.get('difficulty')
     quiz_type = request.form.get('quiz_type')
@@ -73,6 +77,6 @@ def generate_quiz():
     
     if response.status_code == 200:
         questions = response.json()['results']
-        return jsonify({'questions': questions})
+        return render_template('quiz.html', questions=questions)
     else:
         return jsonify({'error': 'Failed to fetch questions'}), 500

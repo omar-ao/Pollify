@@ -59,6 +59,7 @@ class User(BaseModel, Base):
         """
         return self.status
     
+    @property
     def is_authenticated(self):
         """
         Checks whether the user is authenticated

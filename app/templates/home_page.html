@@ -11,7 +11,7 @@
   <div class="carousel-inner">
     {% for key, value in categories.items() %}
     <div class="carousel-item {% if loop.first %}active{% endif %}">
-      <svg class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="400" xmlns="http://www.w3.org/2000/svg"
+      <svg class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="350" xmlns="http://www.w3.org/2000/svg"
 	      role="img" aria-label="Placeholder: {{ key }}" preserveAspectRatio="xMidYMid slice" focusable="false">
         <title>{{ key }}</title>
         <rect width="100%" height="100%" fill="{{ colors[loop.index0 % colors|length] }}"></rect>
@@ -29,6 +29,7 @@
               <option value="Medium">Medium</option>
               <option value="Hard">Hard</option>
             </select>
+            
             <select class="form-select" name="quiz_type" aria-label="Select Type">
               <option selected value="Any">Any Type</option>
               <option value="boolean">True / False</option>
