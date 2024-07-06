@@ -3,9 +3,9 @@
 {% block main %}
 
 <div class="container quiz">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" style="position: relative; top: 80px">
         <div>
-            <h1>Quiz</h1>
+            <h1>{{ title }} Quiz</h1>
         </div>
         
         <form action="{{ url_for('home.submit_quiz') }}" method="post">

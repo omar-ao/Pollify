@@ -78,7 +78,7 @@ def generate_quiz():
     if response.status_code == 200:
         questions = response.json()['results']
         session['questions'] = questions
-        return render_template('quiz.html', questions=questions)
+        return render_template('quiz.html', questions=questions, title=category)
     else:
         return jsonify({'error': 'Failed to fetch questions'}), 500
     
