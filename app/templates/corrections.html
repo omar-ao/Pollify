@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %} Corrections {% endblock %}
+{% block main %}
+
+<div class="container quiz">
+    <div class="row justify-content-center" style="position: relative; top: 80px">
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+  {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+      {{ message.strip("[]").strip("\'").strip("\"") }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+        <div>
+            <h1>Corrections</h1>
+        </div>
+        
+        <form action="{{ url_for('home.submit_quiz') }}" method="post">
+            {% for question in questions %}
+                <div>
+                    <p class="lead">{{ loop.index }}. {{ question['question']|safe }}</p>
+                    {% if question['type'] == 'multiple' %}
+                            <input type="checkbox" style="color: green;" checked disabled name="question{{ loop.index }}" value="{{ question['correct_answer'] }}"> {{ question['correct_answer'] }}<br>
+                            {% for answer in question['incorrect_answers'] %}
+                            <input type="checkbox" disabled name="question{{ loop.index }}" value="True"> {{ answer }}<br>
+                            {% endfor %}
+                    {% elif question['type'] == 'boolean' %}
+                        {% if question['correct_answer'] == 'True' %}
+                        <input type="radio" style="background-color: green;" checked disabled name="question{{ loop.index }}" value="True"> True<br>
+                        {% else %}
+                        <input type="radio" style="color: green;" checked disabled name="question{{ loop.index }}" value="False"> False<br>
+                        {% endif %}
+                    {% endif %}
+                    <br>
+                </div>
+            {% endfor %}
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -96,4 +96,4 @@ def submit_quiz():
     percentage = (score / 10) * 100
 
     flash(f"You have scored: {percentage}%", "success")
-    return redirect(url_for('home.index'))
+    return render_template('corrections.html', questions=questions)
