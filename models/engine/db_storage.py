@@ -5,17 +5,16 @@ Contains the class DBStorage
 
 import models
 from models.base_model import BaseModel, Base
-from models.option import Option
-from models.poll import Poll
+from models.quiz import Quiz
+from models.score import Score
 from models.user import User
-from models.vote import Vote
 from os import getenv
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 
-classes = {"Poll": Poll, "Option": Option, "Vote": Vote, "User": User}
+classes = {"Quiz": Quiz, "Score": Score, "User": User}
 
 
 class DBStorage:

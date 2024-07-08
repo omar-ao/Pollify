@@ -3,36 +3,39 @@
 Renders home page
 """
 
-from flask import Blueprint, flash, jsonify, redirect, render_template, request, session, url_for
+from flask import (Blueprint, flash, jsonify, redirect, render_template,
+                   request, session, url_for)
 import requests
 from flask_login import current_user, login_required
+from models.quiz import Quiz
+from models.score import Score
 
 home = Blueprint('home', __name__)
 
 categories = {
-    'General Knowledge' : '9',
+    'General Knowledge': '9',
     'Entertainment: Books': '10',
     'Entertainment: Film': '11',
-    'Entertainment: Music' : '12',
+    'Entertainment: Music': '12',
     'Entertainment: Musicals & Theatres': '13',
     'Entertainment: Television': '14',
-    'Entertainment: Video Games' : '15',
+    'Entertainment: Video Games': '15',
     'Entertainment: Board Games': '16',
-    'Science & Nature' : '17',
+    'Science & Nature': '17',
     'Science: Computers': '18',
     'Science: Mathematics': '19',
-    'Mythology' : '20',
+    'Mythology': '20',
     'Sports': '21',
     'Geography': '22',
     'History': '23',
     'Politics': '24',
-    'Art' : '25',
+    'Art': '25',
     'Celebrities': '26',
     'Animals': '27',
     'Vehicles': '28',
     'Entertainment: Comics': '29',
     'Science: Gadgets': '30',
-    'Entertainment: Japanese Anime & Manga' : '31',
+    'Entertainment: Japanese Anime & Manga': '31',
     'Entertainment: Cartoon & Animations': '32',
 }
 
@@ -51,6 +54,7 @@ def index():
     return render_template('/home_page.html', categories=categories,
                            colors=colors)
 
+
 @home.route('/generate_quiz', methods=['POST'])
 @login_required
 def generate_quiz():
@@ -58,10 +62,12 @@ def generate_quiz():
 
     if not current_user.is_authenticated:
         return redirect(url_for('auth.login'))
-        
+
     category = request.form.get('category')
     difficulty = request.form.get('difficulty')
     quiz_type = request.form.get('quiz_type')
+
+    session['category'] = category
 
     params = ""
     if difficulty != "Any":
@@ -74,14 +80,16 @@ def generate_quiz():
             categories.get(category), params)
 
     response = requests.get(url=url)
-    
+
     if response.status_code == 200:
         questions = response.json()['results']
         session['questions'] = questions
-        return render_template('quiz.html', questions=questions, title=category)
+        return render_template('quiz.html', questions=questions,
+                               title=category)
     else:
         return jsonify({'error': 'Failed to fetch questions'}), 500
-    
+
+
 @home.route('/submit_quiz', methods=['POST'])
 @login_required
 def submit_quiz():
@@ -94,6 +102,16 @@ def submit_quiz():
         if selected_answer == correct_answer:
             score += 1
     percentage = (score / 10) * 100
+
+    # Create and save quiz to the database
+    quiz_data = {'user_id': current_user.id, 'title': session['category'], 'questions': questions}
+    quiz = Quiz(**quiz_data)
+    quiz.save()
+
+    # Create score and save to the database
+    score_data = {'user_id': current_user.id, 'quiz_id': quiz.id, 'score': percentage}
+    score = Score(**score_data)
+    score.save()
 
     flash(f"You have scored: {percentage}%", "success")
     return render_template('corrections.html', questions=questions)
