@@ -4,3 +4,8 @@ body {
     background-repeat: no-repeat;
     background-position: center center;
 }
+
+.logo-auth {
+    height: 24px;
+    width: 24px;
+}

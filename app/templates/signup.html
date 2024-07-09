@@ -6,7 +6,11 @@
         <div class="col-lg-5">
             <div class="card shadow-lg my-5">
                 <div class="card-body">
-                    <h2 class="card-title text-center">Register</h2>
+                    <br>
+                    <div class="text-center">
+                        <img src="{{ url_for('static', filename='/images/quizmania-logo.png') }}" class="" style="height: aut; width: 12em;" alt="quizmani log">
+                    </div>
+                    <br>
                     <form method="POST" action="{{ url_for('auth.signup') }}">
                         {{ form.hidden_tag() }}
                         <div class="form-group">
@@ -29,7 +33,10 @@
                             {{ form.last_name.label(class="form-label") }}
                             {{ form.last_name(class="form-control form-control-user") }}
                         </div>
-                        {{ form.submit(class="btn btn-primary btn-user btn-block") }}
+                        <br>
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-primary btn-user btn-block") }}
+                        </div>
                     </form>
                     <hr>
                     <div class="text-center">
