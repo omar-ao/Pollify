@@ -15,9 +15,7 @@ of fun.
  
 ## Demo
 
-![Logo](app/static/images/quizmania-logo.png)
-
-![Login](screenshorts/logo.png)
+![Login](screenshorts/login.png)
 
 ![Signup](screenshorts/signup.png)
 
