@@ -3,12 +3,15 @@
 Renders home page
 """
 
+from collections import defaultdict
 from flask import (Blueprint, flash, jsonify, redirect, render_template,
                    request, session, url_for)
 import requests
 from flask_login import current_user, login_required
+from models import storage
 from models.quiz import Quiz
 from models.score import Score
+from models.user import User
 
 home = Blueprint('home', __name__)
 
@@ -115,3 +118,48 @@ def submit_quiz():
 
     flash(f"You have scored: {percentage}%", "success")
     return render_template('corrections.html', questions=questions)
+
+
+@home.route('/leader_board', methods=['GET'])
+@login_required
+def leader_board():
+    """Returns to ten users with the highest score"""
+    scores_list = [score.to_dict() for key, score in storage.all(Score).items()]
+    
+    users_list = [user.to_dict() for key, user in storage.all(User).items()]
+    # Dictionary to hold the sum of scores and count of quizzes for each user
+    user_data = defaultdict(lambda: {"total_score": 0.0, "quiz_count": 0})
+
+    # Iterate over the list and sum the scores and count quizzes for each user
+    for score_entry in scores_list:
+        user_id = score_entry["user_id"]
+        score = score_entry["score"]
+        user_data[user_id]["total_score"] += score
+        user_data[user_id]["quiz_count"] += 1
+
+    # Create a dictionary to map user_id to full names
+    user_names = {user["id"]: f"{user['first_name']} {user['last_name']}" for user in users_list}
+
+    # Create a list of dictionaries with the user's name, total score, and quiz count
+    top_scores = [
+        {
+            "name": user_names[user_id],
+            "total_score": data["total_score"],
+            "quiz_count": data["quiz_count"]
+        }
+        for user_id, data in user_data.items()
+    ]
+
+    # Sort the list by total scores in descending order
+    top_scores = sorted(top_scores, key=lambda x: x["total_score"], reverse=True)
+    return render_template('leader_board.html', top_scores=top_scores)
+
+
+@home.route('/history', methods=['GET'])
+@login_required
+def history():
+    """Returns users attempted quizzes"""
+    quizzes = storage.all(Quiz)
+    user_quizzes = [quiz.to_dict() for key, quiz in quizzes.items() if quiz.user_id == current_user.id]
+
+    return user_quizzes
