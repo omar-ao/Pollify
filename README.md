@@ -31,7 +31,7 @@ pip3 install virtualenv
 virtualenv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cat set_mysql_dev_db | mysql -hlocalhost -uroot -p
+cat setup_mysql_dev_db | mysql -hlocalhost -uroot -p
 source set_env_variables
 ./run.py
 ```

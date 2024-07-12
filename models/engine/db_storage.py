@@ -24,17 +24,17 @@ class DBStorage:
 
     def __init__(self):
         """Instantiate a DBStorage object"""
-        POLLIFY_MYSQL_USER = getenv('POLLIFY_MYSQL_USER')
-        POLLIFY_MYSQL_PWD = getenv('POLLIFY_MYSQL_PWD')
-        POLLIFY_MYSQL_HOST = getenv('POLLIFY_MYSQL_HOST')
-        POLLIFY_MYSQL_DB = getenv('POLLIFY_MYSQL_DB')
-        POLLIFY_ENV = getenv('POLLIFY_ENV')
+        QM_MYSQL_USER = getenv('QM_MYSQL_USER')
+        QM_MYSQL_PWD = getenv('QM_MYSQL_PWD')
+        QM_MYSQL_HOST = getenv('QM_MYSQL_HOST')
+        QM_MYSQL_DB = getenv('QM_MYSQL_DB')
+        QM_ENV = getenv('QM_ENV')
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(POLLIFY_MYSQL_USER,
-                                             POLLIFY_MYSQL_PWD,
-                                             POLLIFY_MYSQL_HOST,
-                                             POLLIFY_MYSQL_DB))
-        if POLLIFY_ENV == "test":
+                                      format(QM_MYSQL_USER,
+                                             QM_MYSQL_PWD,
+                                             QM_MYSQL_HOST,
+                                             QM_MYSQL_DB))
+        if QM_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
