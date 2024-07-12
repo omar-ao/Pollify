@@ -162,4 +162,4 @@ def history():
     quizzes = storage.all(Quiz)
     user_quizzes = [quiz.to_dict() for key, quiz in quizzes.items() if quiz.user_id == current_user.id]
 
-    return user_quizzes
+    return render_template('history.html', quizzes=user_quizzes)

@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import secrets
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
@@ -13,7 +14,7 @@ login_manager.login_message_category = 'info'
 def create_app():
     """Creates the application"""
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'your_secret_key'
+    app.config['SECRET_KEY'] = secrets.token_hex(16)
 
     bcrypt.init_app(app)
     login_manager.init_app(app)

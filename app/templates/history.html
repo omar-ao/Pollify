@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %} History {% endblock %}
+{% block main %}
+
+{% if quizzes == [] %}
+<div class="text-center">
+    <p class="lead">You have not attempted any quiz</p>
+    <a href="/">Try generating one</a>
+</div>
+{% endif %}
+
+<div class="container" style="position: absolute; top: 80px;">
+  <div class="accordion" id="accordionExample">
+    {% for quiz in quizzes %}
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ loop.index }}" aria-expanded="false" aria-controls="collapseTwo">
+          {{ loop.index }}. {{ quiz.title }}
+        </button>
+      </h2>
+      <div id="{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            {% for question in quiz.questions %}
+            <div>
+                <p class="lead">{{ loop.index }}. {{ question['question']|safe }}</p>
+                {% if question['type'] == 'multiple' %}
+                        <input type="checkbox" style="color: green;" checked disabled name="question{{ loop.index }}" value="{{ question['correct_answer'] }}"> {{ question['correct_answer'] }}<br>
+                        {% for answer in question['incorrect_answers'] %}
+                        <input type="checkbox" disabled name="question{{ loop.index }}" value="True"> {{ answer }}<br>
+                        {% endfor %}
+                {% elif question['type'] == 'boolean' %}
+                    {% if question['correct_answer'] == 'True' %}
+                    <input type="radio" style="background-color: green;" checked disabled name="question{{ loop.index }}" value="True"> True<br>
+                    {% else %}
+                    <input type="radio" style="color: green;" checked disabled name="question{{ loop.index }}" value="False"> False<br>
+                    {% endif %}
+                {% endif %}
+                <br>
+            </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}
